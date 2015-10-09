@@ -7,7 +7,7 @@ class Scripts(object):
     title = "This is the title"
     description = "This is the description"
     retries = 4
-    runtime = "60s"
+    runtime = "5s"
 
     last_run_time = int(time.time())
 
@@ -32,6 +32,10 @@ class Scripts(object):
 
     def set_runtime(self, runtime):
         pass
+
+    def script_failed(self, msg):
+        print "Script failed to load: ", msg
+        return False
 
     def make_seconds(self, seconds):
         return int(seconds.replace("s", ""))

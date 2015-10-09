@@ -2,7 +2,7 @@ from scripts import Scripts
 import subprocess
 import re
 
-class Test(Scripts):
+class Ping(Scripts):
     host = ""
     max_avg_latency = ""
 
@@ -12,7 +12,7 @@ class Test(Scripts):
         self.max_avg_latency = max_avg_latency
 
         #pass remaining arguments to the parent class
-        super(Test, self).__init__(**kwargs)
+        super(Ping, self).__init__(**kwargs)
 
     def do_test(self):
         ping = subprocess.Popen(
@@ -37,4 +37,3 @@ class Test(Scripts):
                 self.failed("Unexpected ping output!")
         else:
             self.passed()
-
