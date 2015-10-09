@@ -13,4 +13,3 @@ To me, Nagios, Zabbix, etc are overkill for this.
 I just want to be able to write a quick python script, and when the conditions in the script are met, send me a notification on the specific channel I've specified.
 
 
-Currently, nothing is even close to working, just planning around with dynamically loading python scripts for now.
