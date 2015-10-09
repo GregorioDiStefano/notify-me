@@ -3,6 +3,7 @@ import os
 import subprocess
 import shlex
 import time
+import logging
 
 class ShellCmd(Scripts):
     cmd = ""
@@ -40,7 +41,8 @@ class ShellCmd(Scripts):
         out, error = shell_script.communicate()
         exit_code = shell_script.returncode
 
-        print out
+        if self.debug:
+            logging.debug("Script out: " + out)
 
         if error or exit_code:
             self.failed()

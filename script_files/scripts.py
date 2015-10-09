@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 import time
 import re
+import logging
 
 class Scripts(object):
     __metaclass__ = ABCMeta
@@ -8,13 +9,15 @@ class Scripts(object):
     description = "This is the description"
     retries = 4
     runtime = "5s"
+    debug = False
 
     last_run_time = int(time.time())
 
     def __init__(self, **kwargs):
-        print "Object created."
-        self.runtime = kwargs["runtime"]
-        self.set_runtime(self.runtime)
+        if "runtime" in kwargs:
+            self.runtime = kwargs["runtime"]
+        if "debug" in kwargs:
+            self.debug = kwargs["debug"]
 
     @abstractmethod
     def do_test(self):
@@ -25,16 +28,13 @@ class Scripts(object):
             self.do_test()
 
     def failed(self, msg = ""):
-        print "Failed with: %s. Sending notification." % msg
+        logging.info("Failed with: %s. Sending notification." % msg)
 
     def passed(self):
-        print "Passed."
-
-    def set_runtime(self, runtime):
-        pass
+        logging.info("Passed.")
 
     def script_failed(self, msg):
-        print "Script failed to load: ", msg
+        logging.info("Script failed to load: ", msg)
         return False
 
     def make_seconds(self, seconds):

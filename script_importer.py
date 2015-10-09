@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import logging
 
 import_blacklist = ["__init__", "scripts"]
 imported_scripts = set()
@@ -20,6 +21,6 @@ def __get_module_names_in_dir(path):
                 module_name = regexp_result.groups()[0]
                 if module_name in import_blacklist:
                     continue
-                print "Loading: " , module_name
+                logging.debug("Loading: " + module_name)
                 imported_scripts.add(module_name)
     return imported_scripts
