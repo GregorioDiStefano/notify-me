@@ -2,7 +2,7 @@ import os
 import re
 import sys
 
-import_blacklist = ["__init__", "Scripts"]
+import_blacklist = ["__init__", "scripts"]
 imported_scripts = set()
 
 def do_import(path, env):
