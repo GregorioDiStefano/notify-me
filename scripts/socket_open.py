@@ -20,7 +20,7 @@ class OpenSocket(Scripts):
                 s.settimeout(1)
                 s.connect( (self.host, int(port)) )
             except Exception, e:
-                fail_str = "Port: %d is closed" % (port)
+                fail_str = "%s:%d is closed" % (self.host, port)
                 self.failed(fail_str)
             else:
                 self.passed()
