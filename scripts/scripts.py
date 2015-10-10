@@ -5,7 +5,7 @@ import logging
 import sys
 
 sys.path.append("..")
-from channels.channel import Channel
+from channels.channels import Channel
 
 class Scripts(object):
     __metaclass__ = ABCMeta

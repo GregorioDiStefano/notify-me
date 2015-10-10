@@ -1,4 +1,4 @@
-from channel import Channel
+from channels import Channel
 class LogFile(Channel):
 
     filename = "log.txt"

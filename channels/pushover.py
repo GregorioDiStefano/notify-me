@@ -1,7 +1,7 @@
 import httplib
 import urllib
 import logging
-from channel import Channel
+from channels import Channel
 
 class Pushover(Channel):
 
