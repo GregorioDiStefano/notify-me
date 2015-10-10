@@ -19,13 +19,23 @@ class ChannelImporter(object):
         if not self.Config.sections():
             logging.critical("Empty configuration")
 
-        #TODO:  A way nicer way of doing this is looking at the sections
-        #       in the ini file, and loading the modules below accordingly.
+        #   Dynamically call the load function for a section:
+        #       Every section calls: load_<section name>
+        #       where the section name is in lowercase.
+
+        for section in self.Config.sections():
+            method_name = "load_" + section.lower()
+
+            if hasattr(self, method_name):
+                method = getattr(self, "load_" + section.lower())
+                method()
+            else:
+                logging.critical("The method \"%s\" does not exist in the ChannelImporter class" % (method_name))
 
     def load_logfile(self):
         LogFile()
 
-    def load_pusher(self):
+    def load_pushover(self):
         if "pushover" not in self.Config.sections():
             logging.critical("[pushover] not specifed")
         else:

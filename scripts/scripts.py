@@ -17,9 +17,11 @@ class Scripts(object):
     subscribed_channels = set()
 
     last_run_time = int(time.time())
+    log_passes = False
 
     def __init__(self, **kwargs):
         self.subscribed_channels = set()
+        log_passes = False
         if "runtime" in kwargs:
             self.runtime = kwargs["runtime"]
         if "debug" in kwargs:
@@ -45,7 +47,7 @@ class Scripts(object):
                 logging.critical("Failed to find channel: %s" % channel)
 
     def failed(self, msg = ""):
-        logging.info("Failed with: %s. Sending notification via %s" % (msg, self.subscribed_channels))
+        logging.info("Failed with: %s. Sending notification via %s" % (msg, ' '.join(self.subscribed_channels)))
         for sc in self.subscribed_channels:
             if sc in Channel.available_channels:
                 obj = Channel.available_channels.get(sc)
@@ -53,8 +55,22 @@ class Scripts(object):
             else:
                 logging.critical("Error! %s does not exist as a propery in the Channel class!" % (sc))
 
-    def passed(self):
-        logging.info("Passed.")
+    def passed(self, msg):
+        pass_str = self.title + " passed."
+
+        for sc in self.subscribed_channels:
+            if sc in Channel.available_channels:
+                obj = Channel.available_channels.get(sc)
+                if obj.log_passes:
+                    if msg:
+                        obj.send_msg(msg)
+                    else:
+                        obj.send_msg(pass_str)
+        else:
+            if msg:
+                logging.info(msg)
+            else:
+                logging.info(pass_str)
 
     def script_failed(self, msg):
         logging.info("Script failed to load: ", msg)

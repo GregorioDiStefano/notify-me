@@ -14,7 +14,7 @@ class Pushover(Channel):
         super(Pushover, self).__init__()
 
     def __str__(self):
-        return "%s: using api_token: %s and user_token: %s" % (self.name, self.api_token, self.user_token)
+        return "<%s> using api_token: %s and user_token: %s" % (self.channel_name, self.api_token, self.user_token)
 
     def do_send_msg(self, msg):
         conn = httplib.HTTPSConnection("api.pushover.net:443")

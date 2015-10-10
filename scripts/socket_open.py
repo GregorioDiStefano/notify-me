@@ -6,6 +6,7 @@ class OpenSocket(Scripts):
     ports = []
 
     def __init__(self, host, ports, **kwargs):
+        self.title = "%s: %s open port check" % (host, ports)
         self.description = "Check if ports are open"
         self.host = host
         self.ports = ports
@@ -23,4 +24,4 @@ class OpenSocket(Scripts):
                 fail_str = "%s:%d is closed" % (self.host, port)
                 self.failed(fail_str)
             else:
-                self.passed()
+                self.passed("%s:%d is opened" % (self.host, port))

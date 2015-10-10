@@ -3,8 +3,10 @@ import script_importer
 import threading
 import time
 import logging
+import coloredlogs
 
-logging.basicConfig(level=logging.DEBUG)
+coloredlogs.install(level=logging.DEBUG)
+
 script_importer.do_import("scripts", globals())
 tests = []
 
@@ -23,8 +25,7 @@ def scheduler():
 
 def import_channels():
     ci = ChannelImporter()
-    ci.load_logfile()
-    ci.load_pusher()
+
 
 """
     Lazy implementation for now
