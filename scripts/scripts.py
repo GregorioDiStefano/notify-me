@@ -17,11 +17,10 @@ class Scripts(object):
     subscribed_channels = set()
 
     last_run_time = int(time.time())
-    log_passes = False
 
     def __init__(self, **kwargs):
         self.subscribed_channels = set()
-        log_passes = False
+
         if "runtime" in kwargs:
             self.runtime = kwargs["runtime"]
         if "debug" in kwargs:
