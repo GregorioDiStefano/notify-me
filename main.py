@@ -34,7 +34,7 @@ def import_tests():
     tests.append(ping_test.Ping("8.8.8.8", max_avg_latency=50, runtime="20s", channel=["LogFile"]))
     #tests.append(shell_cmd.ShellCmd("ping -c 10 google.ca", runtime="1s", debug=True))
     #tests.append(shell_cmd.ShellCmd("ping -c 1 reddit.com", runtime="1s", ))
-    tests.append(socket_open.OpenSocket(host="www.google.ca", ports=[80, 443, 4221], runtime="10s", channel=["LogFile"]))
+    tests.append(socket_open.OpenSocket(host="www.google.ca", ports=[80, 443, 4221], runtime="10s", channel=["LogFile", "Pushover"]))
 
 if __name__ == "__main__":
     for script in script_importer.imported_scripts:

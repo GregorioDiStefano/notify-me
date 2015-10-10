@@ -60,7 +60,7 @@ class Scripts(object):
         for sc in self.subscribed_channels:
             if sc in Channel.available_channels:
                 obj = Channel.available_channels.get(sc)
-                if obj.log_passes:
+                if hasattr(obj, "log_passes") and obj.log_passes:
                     if msg:
                         obj.send_msg(msg)
                     else:
