@@ -4,12 +4,14 @@ import threading
 import time
 import logging
 import coloredlogs
+import sys
+import inspect
+
 
 coloredlogs.install(level=logging.DEBUG)
 
 script_import.do_import("scripts", globals())
 tests = []
-
 
 def scheduler():
     while True:
@@ -21,11 +23,10 @@ def scheduler():
             time.sleep(1)
         except KeyboardInterrupt:
             logging.debug("Exiting....")
-            exit(0)
+            sys.exit(0)
 
 def import_channels():
-    ci = ChannelImporter()
-
+    ChannelImporter()
 
 """
     Lazy implementation for now
@@ -37,8 +38,7 @@ def import_tests():
     tests.append(socket_open.OpenSocket(host="www.google.ca", ports=[80, 443, 4221], runtime="10s", channel=["LogFile", "Pushover"]))
 
 if __name__ == "__main__":
-    for script in script_import.imported_scripts:
-        logging.debug("Loaded: " + script)
+    logging.debug("Loaded: %s" % ' '.join(script_import.imported_classes))
 
     import_channels()
     import_tests()

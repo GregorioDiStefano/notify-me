@@ -2,14 +2,25 @@ import os
 import re
 import sys
 import logging
+import sys
+import inspect
 
-import_blacklist = ["__init__", "scripts"]
+#Forced to use this hack, since I cannot make scripts into a module
+sys.path.append("scripts")
+import scripts
+
+import_blacklist = ["__init__"]
 imported_scripts = set()
+imported_classes = set()
 
 def do_import(path, env):
     sys.path.append(path)
     for module_name in sorted(__get_module_names_in_dir(path)):
         env[module_name] = __import__(module_name)
+        clsmembers = inspect.getmembers(sys.modules[str(module_name)], inspect.isclass)
+        for clsmember in clsmembers:
+            if issubclass(clsmember[1], scripts.Scripts):
+                imported_classes.add(str(clsmember[1]))
 
 __module_file_regexp = "(.+)\.py$"
 
@@ -24,3 +35,10 @@ def __get_module_names_in_dir(path):
                 logging.debug("Loading: " + module_name)
                 imported_scripts.add(module_name)
     return imported_scripts
+
+"""
+    TODO:
+    Read every section, and related key/value pairs, and create object from them
+"""
+class ScriptSettings(object):
+    pass
