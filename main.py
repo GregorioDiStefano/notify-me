@@ -1,5 +1,5 @@
-from channel_importer import ChannelImporter
-import script_importer
+from channel_import import ChannelImporter
+import script_import
 import threading
 import time
 import logging
@@ -7,7 +7,7 @@ import coloredlogs
 
 coloredlogs.install(level=logging.DEBUG)
 
-script_importer.do_import("scripts", globals())
+script_import.do_import("scripts", globals())
 tests = []
 
 
@@ -37,7 +37,7 @@ def import_tests():
     tests.append(socket_open.OpenSocket(host="www.google.ca", ports=[80, 443, 4221], runtime="10s", channel=["LogFile", "Pushover"]))
 
 if __name__ == "__main__":
-    for script in script_importer.imported_scripts:
+    for script in script_import.imported_scripts:
         logging.debug("Loaded: " + script)
 
     import_channels()
