@@ -28,6 +28,10 @@ class Scripts(object):
         if "channel" in kwargs:
             self.subscribe_channel(kwargs["channel"])
 
+    def __str__(self):
+        str_format = "<%s>" % (self.title)
+        return str_format
+
     @abstractmethod
     def do_test(self):
         pass
