@@ -27,7 +27,7 @@ class ChannelImporter(object):
             method_name = "load_" + section.lower()
 
             if hasattr(self, method_name):
-                method = getattr(self, "load_" + section.lower())
+                method = getattr(self, method_name)
                 method()
             else:
                 logging.critical("The method \"%s\" does not exist in the ChannelImporter class" % (method_name))
