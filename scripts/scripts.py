@@ -42,9 +42,7 @@ class Scripts(object):
             self.do_test()
 
     def subscribe_channel(self, channels):
-        print "Channels: ", channels
         for channel in channels:
-            logging.debug("Subscribing %s to: %s" % (self, channel))
             if channel in Channel.channels:
                 self.subscribed_channels.add(channel)
                 logging.info("%s subscribed to %s" % (self, channel))
@@ -71,11 +69,11 @@ class Scripts(object):
                         obj.send_msg(msg)
                     else:
                         obj.send_msg(pass_str)
+
+        if msg:
+            logging.info(msg)
         else:
-            if msg:
-                logging.info(msg)
-            else:
-                logging.info(pass_str)
+            logging.info(pass_str)
 
     def script_failed(self, msg):
         logging.info("Script failed to load: ", msg)

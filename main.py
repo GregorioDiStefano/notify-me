@@ -8,7 +8,7 @@ import sys
 import inspect
 
 
-script_settings_filename = "scripts.json"
+script_settings_filename = "conf/scripts.json"
 coloredlogs.install(level=logging.DEBUG)
 script_import.do_import("scripts", globals())
 

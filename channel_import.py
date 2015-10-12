@@ -8,7 +8,7 @@ import logging
 import os
 
 class ChannelImporter(object):
-    filename = "channels.ini"
+    filename = "conf/channels.ini"
     Config = ConfigParser.ConfigParser()
 
     def __init__(self):
