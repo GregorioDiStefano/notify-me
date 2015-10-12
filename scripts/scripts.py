@@ -59,7 +59,7 @@ class Scripts(object):
             else:
                 logging.critical("Error! %s does not exist as a propery in the Channel class!" % (sc))
 
-    def passed(self, msg):
+    def passed(self, msg=""):
         pass_str = self.title + " passed."
 
         for sc in self.subscribed_channels:

@@ -1,6 +1,5 @@
 import os
 import re
-import sys
 import logging
 import sys
 import inspect
@@ -45,6 +44,9 @@ class ScriptConfig(object):
 
     loaded_json = ""
 
+    # List of object created with the scripts.json file
+    script_objects = []
+
     def __init__(self, filename):
         self.filename = filename
 
@@ -53,6 +55,10 @@ class ScriptConfig(object):
             self.loaded_json = json.loads(data)
         except IOError:
             logging.critical("Error loading %s!", self.filename)
+            return None
+        except ValueError:
+            logging.critical("%s is not a valid JSON file", self.filename)
+            return None
         else:
             logging.debug("Loaded %s" % (self.filename))
 
@@ -71,8 +77,19 @@ class ScriptConfig(object):
             missing_keys = ' '.join(missing_keys)
             logging.critical("Unknow scripts: %s in %s", missing_keys, self.filename)
 
+    def create_script_objects(self, obj, args):
+        for classname, fullname in imported_classes:
+            if (classname == obj):
+                try:
+                    self.script_objects.append(fullname(**args))
+                except Exception, e:
+                    logging.critical("Error (%s) when creating %s with arguments <%s>" % (e, obj, json.dumps(args)))
+
     def create(self):
         keys = self.loaded_json.keys()
-        for key in keys:
-            for arr in self.loaded_json[key]:
-                print arr
+        for obj in keys:
+            for kv_pair in self.loaded_json[obj]:
+                args = kv_pair
+                self.create_script_objects(obj, args)
+
+

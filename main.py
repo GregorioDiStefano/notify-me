@@ -11,9 +11,9 @@ import inspect
 script_settings_filename = "scripts.json"
 coloredlogs.install(level=logging.DEBUG)
 script_import.do_import("scripts", globals())
-tests = []
 
-def scheduler():
+
+def scheduler(tests):
     while True:
         try:
             for test in tests:
@@ -32,7 +32,7 @@ def import_channels():
     Lazy implementation for now
 """
 def import_tests():
-    script_config = script_import.ScriptConfig(script_settings_filename)
+    return script_import.ScriptConfig(script_settings_filename).script_objects
     #tests.append(ping_test.Ping("8.8.8.8", max_avg_latency=50, runtime="20s", channel=["LogFile"]))
     #tests.append(shell_cmd.ShellCmd("ping -c 10 google.ca", runtime="1s", debug=True))
     #tests.append(shell_cmd.ShellCmd("ping -c 1 reddit.com", runtime="1s", ))
@@ -42,5 +42,5 @@ if __name__ == "__main__":
     logging.debug("Loaded: %s" % str(script_import.imported_classes))
 
     import_channels()
-    import_tests()
-    scheduler()
+    tests = import_tests()
+    scheduler(tests)

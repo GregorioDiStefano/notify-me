@@ -1,0 +1,25 @@
+{
+  "DoesntExistClassLOL" : [
+  ],
+
+
+  "ShellCmd": [
+    {
+        "cmd" : "ls"
+    }
+  ],
+
+  "Ping": [
+    {
+      "host": "8.8.8.8",
+      "ports": ["53"],
+      "description": "Check if Google DNS servers are up",
+      "channel": ["LogFile", "Pushover"]
+    },
+    {
+      "host": "8.8.4.4",
+      "ports": ["53"],
+      "description": "Check if Google DNS servers are up"
+    }
+  ]
+}
