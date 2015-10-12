@@ -50,13 +50,16 @@ class Scripts(object):
                 logging.critical("Failed to find channel: %s" % channel)
 
     def failed(self, msg):
-        logging.info("Failed with: %s. Sending notification via %s" % (msg, ', '.join(self.subscribed_channels)))
-        for sc in self.subscribed_channels:
-            if sc in Channel.available_channels:
-                obj = Channel.available_channels.get(sc)
-                obj.send_msg(msg)
-            else:
-                logging.critical("Error! %s does not exist as a propery in the Channel class!" % (sc))
+        if self.subscribed_channels:
+            logging.info("%s failed with: %s. Sending notification via %s" % (self, msg, ', '.join(self.subscribed_channels)))
+            for sc in self.subscribed_channels:
+                if sc in Channel.available_channels:
+                    obj = Channel.available_channels.get(sc)
+                    obj.send_msg(msg)
+                else:
+                    logging.critical("Error! %s does not exist as a propery in the Channel class!" % (sc))
+        else:
+            logging.critical("%s failed with: %s. No notification being sent since there is no subscribed channels." % (self, msg))
 
     def passed(self, msg=""):
         pass_str = (str(self) or self.title) + " passed."
