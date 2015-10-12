@@ -20,6 +20,9 @@ class ShellCmd(Scripts):
         #pass remaining arguments to the parent class
         super(ShellCmd, self).__init__(**kwargs)
 
+    def __str__(self):
+        return "Shell Command: %s" % (self.cmd)
+
     #Simple, hacky (using type), check to see if cmd line is valid
     def test_script(self, filename):
         check_cmdline = "type %s 1>/dev/null" % (filename)

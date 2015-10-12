@@ -10,8 +10,8 @@ from channels.channels import Channel
 
 class Scripts(object):
     __metaclass__ = ABCMeta
-    title = "This is the title"
-    description = "This is the description"
+    title = ""
+    description = ""
     retries = 4
     runtime = "5s"
     debug = False
@@ -42,6 +42,7 @@ class Scripts(object):
             self.do_test()
 
     def subscribe_channel(self, channels):
+        print "Channels: ", channels
         for channel in channels:
             logging.debug("Subscribing %s to: %s" % (self, channel))
             if channel in Channel.channels:
@@ -50,8 +51,8 @@ class Scripts(object):
             else:
                 logging.critical("Failed to find channel: %s" % channel)
 
-    def failed(self, msg = ""):
-        logging.info("Failed with: %s. Sending notification via %s" % (msg, ' '.join(self.subscribed_channels)))
+    def failed(self, msg):
+        logging.info("Failed with: %s. Sending notification via %s" % (msg, ', '.join(self.subscribed_channels)))
         for sc in self.subscribed_channels:
             if sc in Channel.available_channels:
                 obj = Channel.available_channels.get(sc)
@@ -60,7 +61,7 @@ class Scripts(object):
                 logging.critical("Error! %s does not exist as a propery in the Channel class!" % (sc))
 
     def passed(self, msg=""):
-        pass_str = self.title + " passed."
+        pass_str = (str(self) or self.title) + " passed."
 
         for sc in self.subscribed_channels:
             if sc in Channel.available_channels:

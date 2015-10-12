@@ -14,6 +14,9 @@ class OpenSocket(Scripts):
         #pass remaining arguments to the parent class
         super(OpenSocket, self).__init__(**kwargs)
 
+    def __str__(self):
+        return "<%s:%s>" % (self.host, " ".join(self.ports))
+
     def do_test(self):
         for port in self.ports:
             try:
@@ -21,7 +24,6 @@ class OpenSocket(Scripts):
                 s.settimeout(1)
                 s.connect( (self.host, int(port)) )
             except Exception, e:
-                fail_str = "%s:%d is closed" % (self.host, port)
-                self.failed(fail_str)
+                self.failed(str(self) + ":" + str(e))
             else:
-                self.passed("%s:%d is opened" % (self.host, port))
+                self.passed()

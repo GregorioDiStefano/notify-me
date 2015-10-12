@@ -16,6 +16,9 @@ class Ping(Scripts):
         #pass remaining arguments to the parent class
         super(Ping, self).__init__(**kwargs)
 
+    def __str__(self):
+        return "<Ping Test for : %s>" % (self.host)
+
     def do_test(self):
         ping = subprocess.Popen(
             ["ping", "-c", "10", self.host],
@@ -38,6 +41,6 @@ class Ping(Scripts):
                 if avg > self.max_avg_latency:
                     self.failed("avg ping time is: %f, expected: < %f" % (avg, self.max_avg_latency))
             else:
-                self.failed("Unexpected ping output!")
+                self.failed("%s: unexpected ping output!" % (self))
         else:
             self.passed()
