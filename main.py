@@ -8,8 +8,8 @@ import sys
 import inspect
 
 
+script_settings_filename = "scripts.json"
 coloredlogs.install(level=logging.DEBUG)
-
 script_import.do_import("scripts", globals())
 tests = []
 
@@ -32,13 +32,14 @@ def import_channels():
     Lazy implementation for now
 """
 def import_tests():
-    tests.append(ping_test.Ping("8.8.8.8", max_avg_latency=50, runtime="20s", channel=["LogFile"]))
+    script_config = script_import.ScriptConfig(script_settings_filename)
+    #tests.append(ping_test.Ping("8.8.8.8", max_avg_latency=50, runtime="20s", channel=["LogFile"]))
     #tests.append(shell_cmd.ShellCmd("ping -c 10 google.ca", runtime="1s", debug=True))
     #tests.append(shell_cmd.ShellCmd("ping -c 1 reddit.com", runtime="1s", ))
-    tests.append(socket_open.OpenSocket(host="www.google.ca", ports=[80, 443, 4221], runtime="10s", channel=["LogFile", "Pushover"]))
+    #tests.append(socket_open.OpenSocket(host="www.google.ca", ports=[80, 443, 4221], runtime="10s", channel=["LogFile", "Pushover"]))
 
 if __name__ == "__main__":
-    logging.debug("Loaded: %s" % ' '.join(script_import.imported_classes))
+    logging.debug("Loaded: %s" % str(script_import.imported_classes))
 
     import_channels()
     import_tests()

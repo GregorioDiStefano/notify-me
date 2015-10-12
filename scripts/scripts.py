@@ -7,6 +7,7 @@ import sys
 sys.path.append("..")
 from channels.channels import Channel
 
+
 class Scripts(object):
     __metaclass__ = ABCMeta
     title = "This is the title"
