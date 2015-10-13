@@ -81,7 +81,9 @@ class ScriptConfig(object):
         for classname, fullname in imported_classes:
             if (classname == obj):
                 try:
-                    self.script_objects.append(fullname(**args))
+                    new_test_obj = fullname(**args)
+                    logging.info("Creating new test object: %s", new_test_obj)
+                    self.script_objects.append(new_test_obj)
                 except Exception, e:
                     logging.critical("Error (%s) when creating %s with arguments <%s>" % (e, obj, json.dumps(args)))
 

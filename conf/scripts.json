@@ -2,6 +2,12 @@
   "DoesntExistClassLOL" : [
   ],
 
+  "WebPageText": [
+    {
+        "host": "https://www.reddit.com/r/funny",
+        "strings_to_match" : ["Awkward"]
+    }
+  ],
 
   "ShellCmd": [
     {
