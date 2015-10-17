@@ -14,6 +14,7 @@ class Scripts(object):
     description = ""
     retries = 4
     runtime = "5s"
+    send_notification = False
     debug = False
     subscribed_channels = set()
 
@@ -28,6 +29,8 @@ class Scripts(object):
             self.debug = kwargs["debug"]
         if "channel" in kwargs:
             self.subscribe_channel(kwargs["channel"])
+        if "send_notification" in kwargs:
+            self.send_notification = kwargs["send_notification"]
 
     def __str__(self):
         str_format = "<%s>" % (self.title)
@@ -39,7 +42,13 @@ class Scripts(object):
 
     def do(self):
         if self.should_test_run_now():
-            self.do_test()
+            if hasattr(self, "do_test"):
+                rtn = self.do_test()
+                if self.send_notification:
+                    self.notify(rtn)
+            else:
+                logging.debug("%s has not do_test() function." % self)
+
 
     def subscribe_channel(self, channels):
         for channel in channels:
@@ -61,18 +70,24 @@ class Scripts(object):
         else:
             logging.critical("%s failed with: %s. No notification being sent since there is no subscribed channels." % (self, msg))
 
+
+    def notify(self, msg):
+        for sc in self.subscribed_channels:
+            if sc in Channel.available_channels:
+                obj = Channel.available_channels.get(sc)
+                obj.send_msg(msg)
+
+
     def passed(self, msg=""):
         pass_str = (str(self) or self.title) + " passed."
 
         for sc in self.subscribed_channels:
             if sc in Channel.available_channels:
                 obj = Channel.available_channels.get(sc)
-                if hasattr(obj, "log_passes") and obj.log_passes:
-                    if msg:
-                        obj.send_msg(msg)
-                    else:
-                        obj.send_msg(pass_str)
-
+                if msg:
+                    obj.send_msg(msg)
+                else:
+                    obj.send_msg(pass_str)
         if msg:
             logging.info(msg)
         else:

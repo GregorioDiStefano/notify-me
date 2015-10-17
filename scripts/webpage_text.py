@@ -19,7 +19,7 @@ class WebPageText(Scripts):
     def do_test(self):
         r = requests.get(self.host)
         if r.status_code != 200:
-            self.failed("%s did not load with HTTP OK, but with: " % self, r.status_code)
+            self.failed("%s did not load with HTTP OK, but with: %s" % (self, r.status_code))
             return
 
         soup = BeautifulSoup(r.text)
