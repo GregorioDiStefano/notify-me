@@ -42,12 +42,9 @@ class Scripts(object):
 
     def do(self):
         if self.should_test_run_now():
-            if hasattr(self, "do_test"):
-                rtn = self.do_test()
-                if self.send_notification:
-                    self.notify(rtn)
-            else:
-                logging.debug("%s has not do_test() function." % self)
+            rtn = self.do_test()
+            if self.send_notification:
+                self.notify(rtn)
 
 
     def subscribe_channel(self, channels):
