@@ -3,6 +3,7 @@ import time
 import re
 import logging
 import sys
+from datetime import datetime
 
 sys.path.append("..")
 from channels.channels import Channel
@@ -29,8 +30,12 @@ class Scripts(object):
             self.debug = kwargs["debug"]
         if "channel" in kwargs:
             self.subscribe_channel(kwargs["channel"])
+        else:
+            logging.critical("no communication channel for %s", self)
         if "send_notification" in kwargs:
             self.send_notification = kwargs["send_notification"]
+
+        #TODO: check if config enters invalid key
 
     def __str__(self):
         str_format = "<%s>" % (self.title)
@@ -103,4 +108,10 @@ class Scripts(object):
         if re.match("^[0-9]+s$", self.runtime):
             if int(time.time()) - self.last_run_time > self.make_seconds(self.runtime):
                 self.last_run_time = time.time()
+                return True
+
+        #Run at HH:MM:SS
+        elif re.match("^[0-9]{2}:[0-9]{2}:[0-9]{2}$", self.runtime):
+            print time.strftime('%H:%M:%S'), "-", self.runtime
+            if str(time.strftime('%H:%M:%S')) == self.runtime:
                 return True
