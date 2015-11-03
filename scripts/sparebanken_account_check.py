@@ -2,6 +2,7 @@ from selenium import webdriver
 from scripts import Scripts
 import logging
 import time
+from pyvirtualdisplay import Display
 
 class SparebankenCheck(Scripts):
 
@@ -18,6 +19,9 @@ class SparebankenCheck(Scripts):
         return "<Sparebanken1: %s>" % self.title
 
     def do_test(self):
+        display = Display(visible=0, size=(800, 600))
+        display.start()
+
         driver = webdriver.Chrome()
         max_wait = 15
         driver.get("https://m.sparebank1.no/personal/#login-basic/osl")
@@ -49,6 +53,7 @@ class SparebankenCheck(Scripts):
             logging.critical("<%s : Page took too long to load>" % (self))
 
         driver.close()
+        display.stop()
 
         if balance:
             return balance
