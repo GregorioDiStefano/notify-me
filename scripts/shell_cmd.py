@@ -34,7 +34,6 @@ class ShellCmd(Scripts):
 
     def do_test(self):
         args = shlex.split(self.cmd)
-
         shell_script = subprocess.Popen(
             args,
             stdout = subprocess.PIPE,
@@ -48,6 +47,6 @@ class ShellCmd(Scripts):
             logging.debug("Script out: " + out)
 
         if error or exit_code:
-            self.failed()
+            self.failed(self.cmd)
         else:
             self.passed()

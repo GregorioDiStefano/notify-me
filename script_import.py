@@ -6,7 +6,10 @@ import inspect
 import json
 
 #Forced to use this hack, since I cannot make scripts into a module
-sys.path.append("scripts")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/scripts")
+
+print sys.path
+
 import scripts
 
 import_blacklist = ["__init__"]

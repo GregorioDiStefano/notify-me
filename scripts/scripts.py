@@ -87,13 +87,9 @@ class Scripts(object):
             if sc in Channel.available_channels:
                 obj = Channel.available_channels.get(sc)
                 if msg:
-                    obj.send_msg(msg)
+                    logging.info(msg)
                 else:
-                    obj.send_msg(pass_str)
-        if msg:
-            logging.info(msg)
-        else:
-            logging.info(pass_str)
+                    logging.info(pass_str)
 
     def script_failed(self, msg):
         logging.info("Script failed to load: ", msg)

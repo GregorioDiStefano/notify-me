@@ -23,5 +23,7 @@ class Pushover(Channel):
                                     "user": self.user_token,
                                     "message": msg}),
                     {"Content-type": "application/x-www-form-urlencoded"})
-        if conn.getresponse().status != 200:
-            logging.critical("API call did not repsonse with HTTP 200 OK")
+	response = conn.getresponse()
+        if response.status != 200:
+            logging.critical("Pusherover API call did not repsonse with HTTP 200 OK")
+
