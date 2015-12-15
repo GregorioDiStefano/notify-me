@@ -46,7 +46,7 @@ class ShellCmd(Scripts):
         if self.debug:
             logging.debug("Script out: " + out)
 
-        if error or exit_code:
+        if error and exit_code:
             self.failed(self.cmd)
         else:
             self.passed()
