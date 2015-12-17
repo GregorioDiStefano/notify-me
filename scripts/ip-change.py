@@ -1,10 +1,14 @@
 from scripts import Scripts
 import requests
 import random
+import logging
 import re
+
+logger = logging.getLogger("notifyme")
 
 class IPChanged(Scripts):
     services = ["http://ifconfig.me/", "http://icanhazip.com/", "http://ident.me/", "http://whatismyip.akamai.com/"]
+
 
     def __init__(self, **kwargs):
         #pass remaining arguments to the parent class
@@ -29,8 +33,11 @@ class IPChanged(Scripts):
         if ip:
             with open("/var/tmp/ip", "a+") as f:
                 ip_from_file = f.readline()
-                if ip != ip_from_file.strip():
+                logger.info(ip + " " + ip_from_file.strip())
+                if ip.strip() != ip_from_file.strip():
+                    logger.debug("Sending new IP update!")
                     f.truncate(0)
                     f.write(ip)
                     self.notify("New IP: " + ip)
-                    print 'Updated ip'
+                else:
+                    logger.info("No new ip address detected")

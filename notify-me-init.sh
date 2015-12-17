@@ -2,6 +2,8 @@
 
 ### BEGIN INIT INFO
 # Provides:          notify-me service
+# Required-Start: 
+# Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Starts the notify-me service
@@ -9,10 +11,9 @@
 ### END INIT INFO
 
 
-DIR=/home/greg/scripts/notify-me/notify-me
+DIR=/home/greg/scripts/notify-me
 DAEMON=$DIR/main.py
 DAEMON_NAME=notifyme
-
 
 DAEMON_OPTS=""
 

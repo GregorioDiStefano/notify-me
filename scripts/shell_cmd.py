@@ -5,6 +5,8 @@ import shlex
 import time
 import logging
 
+logger = logging.getLogger("notifyme")
+
 class ShellCmd(Scripts):
     cmd = ""
     filename = ""
@@ -44,7 +46,7 @@ class ShellCmd(Scripts):
         exit_code = shell_script.returncode
 
         if self.debug:
-            logging.debug("Script out: " + out)
+            logger.debug("Script out: " + out)
 
         if error and exit_code:
             self.failed(self.cmd)

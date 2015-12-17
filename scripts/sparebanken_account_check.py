@@ -5,7 +5,7 @@ import time
 from pyvirtualdisplay import Display
 
 class SparebankenCheck(Scripts):
-
+    logger = logging.getLogger("notifyme")
     def __init__(self, ssn, password, **kwargs):
         self.title = "Check balance of bank account"
         self.ssn = ssn
@@ -50,7 +50,7 @@ class SparebankenCheck(Scripts):
                 count += 1
 
         if count >= max_wait:
-            logging.critical("<%s : Page took too long to load>" % (self))
+            logger.critical("<%s : Page took too long to load>" % (self))
 
         driver.close()
         display.stop()

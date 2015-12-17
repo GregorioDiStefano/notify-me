@@ -8,13 +8,13 @@ import json
 #Forced to use this hack, since I cannot make scripts into a module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/scripts")
 
-print sys.path
-
 import scripts
 
 import_blacklist = ["__init__"]
 imported_scripts = set()
 imported_classes = set()
+
+logger = logging.getLogger('notifyme')
 
 def do_import(path, env):
     sys.path.append(path)
@@ -35,7 +35,7 @@ def __get_module_names_in_dir(path):
                 module_name = regexp_result.groups()[0]
                 if module_name in import_blacklist:
                     continue
-                logging.debug("Loading: " + module_name)
+                logger.debug("Loading: " + module_name)
                 imported_scripts.add(module_name)
     return imported_scripts
 
@@ -57,13 +57,13 @@ class ScriptConfig(object):
             data = open(self.filename).read()
             self.loaded_json = json.loads(data)
         except IOError:
-            logging.critical("Error loading %s!", self.filename)
+            logger.critical("Error loading %s!", self.filename)
             return None
         except ValueError:
-            logging.critical("%s is not a valid JSON file", self.filename)
+            logger.critical("%s is not a valid JSON file", self.filename)
             return None
         else:
-            logging.debug("Loaded %s" % (self.filename))
+            logger.debug("Loaded %s" % (self.filename))
 
         self.check_valid_keys()
         self.create()
@@ -78,17 +78,17 @@ class ScriptConfig(object):
 
         if len(missing_keys):
             missing_keys = ' '.join(missing_keys)
-            logging.critical("Unknow scripts: %s in %s", missing_keys, self.filename)
+            logger.critical("Unknow scripts: %s in %s", missing_keys, self.filename)
 
     def create_script_objects(self, obj, args):
         for classname, fullname in imported_classes:
             if (classname == obj):
                 try:
                     new_test_obj = fullname(**args)
-                    logging.info("Creating new test object: %s", new_test_obj)
+                    logger.info("Creating new test object: %s", new_test_obj)
                     self.script_objects.append(new_test_obj)
                 except Exception, e:
-                    logging.critical("Error (%s) when creating %s with arguments <%s>" % (e, obj, json.dumps(args)))
+                    logger.critical("Error (%s) when creating %s with arguments <%s>" % (e, obj, json.dumps(args)))
 
     def create(self):
         keys = self.loaded_json.keys()

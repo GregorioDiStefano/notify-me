@@ -3,9 +3,12 @@ import subprocess
 import re
 import logging
 
+logger = logging.getLogger("notifyme")
+
 class Ping(Scripts):
     host = ""
     max_avg_latency = ""
+
 
     def __init__(self, host, max_avg_latency=False, **kwargs):
         self.title = "Ping test"
@@ -31,7 +34,7 @@ class Ping(Scripts):
 
         if error or exit_code:
             if self.debug:
-                logging.debug("%s failed with: %s" % (self.title, error))
+                logger.debug("%s failed with: %s" % (self.title, error))
             self.failed()
 
         elif self.max_avg_latency:

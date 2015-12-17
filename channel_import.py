@@ -7,17 +7,20 @@ import ConfigParser
 import logging
 import os
 
+logger = logging.getLogger("notifyme")
+
 class ChannelImporter(object):
+
     filename = os.path.dirname(os.path.abspath(__file__)) + "/conf/channels.ini"
     Config = ConfigParser.ConfigParser()
 
     def __init__(self):
         if not os.path.isfile(self.filename):
-            logging.critical("Error loading %s" % (self.filename))
+            logger.critical("Error loading %s" % (self.filename))
 
         self.Config.read(self.filename)
         if not self.Config.sections():
-            logging.critical("Empty configuration")
+            logger.critical("Empty configuration")
 
         #   Dynamically call the load function for a section:
         #       Every section calls: load_<section name>
@@ -30,14 +33,14 @@ class ChannelImporter(object):
                 method = getattr(self, method_name)
                 method()
             else:
-                logging.critical("The method \"%s\" does not exist in the ChannelImporter class" % (method_name))
+                logger.critical("The method \"%s\" does not exist in the ChannelImporter class" % (method_name))
 
     def load_logfile(self):
         LogFile()
 
     def load_pushover(self):
         if "pushover" not in self.Config.sections():
-            logging.critical("[pushover] not specifed")
+            logger.critical("[pushover] not specifed")
         else:
             api_token = self.Config.get("pushover", "api_token")
             user_token = self.Config.get("pushover", "user_token")

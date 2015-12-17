@@ -1,11 +1,13 @@
 import logging
 
+logger = logging.getLogger("notifyme")
+
 class Channel(object):
 
     name = ""
-
     channels = set()
     channel_name = ""
+
 
     # The following are static variable set by ChannelImporter
     available_channels = dict()
@@ -13,7 +15,7 @@ class Channel(object):
     def __init__(self):
         self.channel_name = self.__class__.__name__
         Channel.register_channel(self.channel_name, self)
-        logging.debug("Loaded: %s", self)
+        logger.debug("Loaded: %s", self)
 
     @staticmethod
     def register_channel(channel_name, obj):

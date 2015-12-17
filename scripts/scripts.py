@@ -7,7 +7,7 @@ from datetime import datetime
 
 sys.path.append("..")
 from channels.channels import Channel
-
+logger = logging.getLogger("notifyme")
 
 class Scripts(object):
     __metaclass__ = ABCMeta
@@ -31,7 +31,7 @@ class Scripts(object):
         if "channel" in kwargs:
             self.subscribe_channel(kwargs["channel"])
         else:
-            logging.critical("no communication channel for %s", self)
+            logger.critical("no communication channel for %s", self)
         if "send_notification" in kwargs:
             self.send_notification = kwargs["send_notification"]
 
@@ -56,21 +56,21 @@ class Scripts(object):
         for channel in channels:
             if channel in Channel.channels:
                 self.subscribed_channels.add(channel)
-                logging.info("%s subscribed to %s" % (self, channel))
+                logger.info("%s subscribed to %s" % (self, channel))
             else:
-                logging.critical("Failed to find channel: %s" % channel)
+                logger.critical("Failed to find channel: %s" % channel)
 
     def failed(self, msg="Something failed"):
         if self.subscribed_channels:
-            logging.info("%s failed with: %s. Sending notification via %s" % (self, msg, ', '.join(self.subscribed_channels)))
+            logger.info("%s failed with: %s. Sending notification via %s" % (self, msg, ', '.join(self.subscribed_channels)))
             for sc in self.subscribed_channels:
                 if sc in Channel.available_channels:
                     obj = Channel.available_channels.get(sc)
                     obj.send_msg(msg)
                 else:
-                    logging.critical("Error! %s does not exist as a propery in the Channel class!" % (sc))
+                    logger.critical("Error! %s does not exist as a propery in the Channel class!" % (sc))
         else:
-            logging.critical("%s failed with: %s. No notification being sent since there is no subscribed channels." % (self, msg))
+            logger.critical("%s failed with: %s. No notification being sent since there is no subscribed channels." % (self, msg))
 
 
     def notify(self, msg):
@@ -80,7 +80,7 @@ class Scripts(object):
                     obj = Channel.available_channels.get(sc)
                     obj.send_msg(msg)
         else:
-            logging.critical("%s failed with: %s. No notification being sent since there is no subscribed channels." % (self, msg))
+            logger.critical("%s failed with: %s. No notification being sent since there is no subscribed channels." % (self, msg))
 
 
     def passed(self, msg=""):
@@ -90,12 +90,12 @@ class Scripts(object):
             if sc in Channel.available_channels:
                 obj = Channel.available_channels.get(sc)
                 if msg:
-                    logging.info(msg)
+                    logger.info(msg)
                 else:
-                    logging.info(pass_str)
+                    logger.info(pass_str)
 
     def script_failed(self, msg):
-        logging.info("Script failed to load: ", msg)
+        logger.info("Script failed to load: ", msg)
         return False
 
     def make_seconds(self, seconds):

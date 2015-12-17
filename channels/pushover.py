@@ -3,6 +3,8 @@ import urllib
 import logging
 from channels import Channel
 
+logger = logging.getLogger("notifyme")
+
 class Pushover(Channel):
 
     api_token = ""
@@ -23,7 +25,7 @@ class Pushover(Channel):
                                     "user": self.user_token,
                                     "message": msg}),
                     {"Content-type": "application/x-www-form-urlencoded"})
-	response = conn.getresponse()
+        response = conn.getresponse()
         if response.status != 200:
-            logging.critical("Pusherover API call did not repsonse with HTTP 200 OK")
+            logger.critical("Pusherover API call did not repsonse with HTTP 200 OK")
 
